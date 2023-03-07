@@ -2,9 +2,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../../_helpers/db');
 const Banner = db.Banner;
-const TokenService = require('../token/token.service');
-const config = require('../../config/config');
-const { sendResponse } = require('../../utils');
 
 require('dotenv').config();
 const AWS = require('aws-sdk');
@@ -25,11 +22,6 @@ const params = {
     }
 };
 
-const { getBannerId } = require('../../middlewares/isAuthenticated');
-const { checkIfQuestionsAreUnanswered } = require('../question-and-answer/question-and-answer.service');
-const { unseenCommunications } = require('../communication/communication.service');
-const { unseenPodcasts } = require('../podcast/podcast.service');
-
 module.exports = {
     getAll,
     getById,
@@ -47,7 +39,7 @@ async function getById(id) {
     return await Banner.findById(id);
 }
 
-function create(bannerParam) {
+function create(banner) {
     return new Promise((resolve, reject) => {
         try {
             
@@ -64,26 +56,8 @@ function create(bannerParam) {
     });
 }
 
-async function update(id, bannerParam) {
-
-    const banner = await Banner.findById(id);
-
-    // validate
-    if (!banner) throw 'Banner not found';
-    if (banner.email !== bannerParam.email && await Banner.findOne({ email: bannerParam.email })) {
-        throw 'Bannername "' + bannerParam.email + '" is already taken';
-    }
-
-    // hash password if it was entered
-    if (bannerParam.password) {
-        bannerParam.hash = bcrypt.hashSync(bannerParam.password, 10);
-    }
-
-    // copy bannerParam properties to banner
-    Object.assign(banner, bannerParam);
-
-    await banner.save();
-    return banner;
+async function update(banner) {
+    return await Banner.findByIdAndUpdate(banner._id, banner);
 }
 
 async function uploadProfilePicture(bannerId, bannerParam) {

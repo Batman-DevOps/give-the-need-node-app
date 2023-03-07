@@ -10,6 +10,7 @@ allRoutes.get('/', (req, res) => {
 const userRoutes = require('../../modules/users/user.routes');
 const youthRoutes = require('../../modules/youth/youth.routes');
 const tutorRoutes = require('../../modules/tutor/tutor.routes');
+const bannerRoutes = require('../../modules/banner/banner.routes');
 // const eventRoutes = require('../../modules/event/event.routes');
 // const taskRoutes = require('../../modules/task/task.routes');
 // const articleRoutes = require('../../modules/article/article.routes');
@@ -24,5 +25,6 @@ const tutorRoutes = require('../../modules/tutor/tutor.routes');
 allRoutes.use(userRoutes);
 allRoutes.use(youthRoutes);
 allRoutes.use(tutorRoutes);
+allRoutes.use(bannerRoutes);
 
 module.exports = allRoutes;

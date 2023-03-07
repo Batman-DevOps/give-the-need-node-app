@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const BannerService = require('./banner.service');
 
+const { getUserId } = require('../../middlewares/isAuthenticated');
 const { sendResponse } = require('../../utils');
 
 module.exports = router;
@@ -24,14 +25,16 @@ async function getById(req, res, next) {
 }
 
 async function update(req, res, next) {
-    req.body.updatedBy = await getBannerId(req);
-    BannerService.update(req.params.id, req.body)
+    let userId = await getUserId(req);
+    req.body.updatedBy = userId;
+    BannerService.update(req.body)
         .then((banner) => res.json({ error: false, success: true, message: "Banner updated successfully", data: banner }))
         .catch(error => sendResponse(res, 500, null, (error.message || error || error.error), false, true));
 }
 
 async function uploadProfilePicture(req, res, next) {
-    const bannerId = await getBannerId(req)
+    let userId = await getUserId(req);
+    req.body.updatedBy = userId;
     req.body.updatedBy = bannerId;
     BannerService.uploadProfilePicture(bannerId, req)
         .then((banner) => res.json({ error: false, success: true, message: "Profile picture updated successfully", data: banner }))
