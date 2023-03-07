@@ -21,8 +21,8 @@ async function create(tutor) {
     return await Tutor.create(tutor);
 }
 
-async function update(id, tutor) {
-    return await Tutor.findByIdAndUpdate(id, tutor);
+async function update(tutor) {
+    return await Tutor.findByIdAndUpdate(tutor._id, tutor);
 }
 
 async function _delete(id) {

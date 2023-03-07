@@ -8,6 +8,7 @@ module.exports = {
     Youth: require('../modules/youth/youth.model'),
     Tutor: require('../modules/tutor/tutor.model'),
     Token: require('../modules/token/token.model'),
+    Banner: require('../modules/banner/banner.model'),
     // Event: require('../modules/event/event.model'),
     // Task: require('../modules/task/task.model'),
     // Article: require('../modules/article/article.model'),

@@ -21,8 +21,8 @@ async function create(youth) {
     return await Youth.create(youth);
 }
 
-async function update(id, youth) {
-    return await Youth.findByIdAndUpdate(id, youth);
+async function update(youth) {
+    return await Youth.findByIdAndUpdate(youth._id, youth);
 }
 
 async function _delete(id) {
