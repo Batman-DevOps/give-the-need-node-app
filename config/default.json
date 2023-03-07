@@ -1,0 +1,31 @@
+{
+    "server": {
+        "port": 3000
+    },
+    "app": {
+        "prefix": "/give-the-need/api",
+        "secret": "longlivenodejsafterallitsjavascript3cheershiphiphurray"
+    },
+    "db": {
+        "mongodb_url": "mongodb+srv://givetheneedapp:C1T1Ei9QKZAzUJob@cluster0.qd5ssnr.mongodb.net",
+        "db_name": "/givetheneed",
+        "db_options": "",
+        "mongodb_session_store_url": "mongodb+srv://givetheneedapp:C1T1Ei9QKZAzUJob@cluster0.qd5ssnr.mongodb.net",
+        "session_db_name": "/givetheneed",
+        "session_db_options": "?"
+    },
+    "auth": {
+        "token_validity": 3600,
+        "cookie_validity": 3600
+    },
+    "cookie": {
+        "path": "/givetheneed",
+        "name": "givetheneed_sid",
+        "validity": 3600
+    },
+    "token": {
+        "validity": 86400,
+        "refreshValidity": 604800,
+        "secret": "longlivenodejsafterallitsjavascript3cheershiphiphurray"
+    }
+}

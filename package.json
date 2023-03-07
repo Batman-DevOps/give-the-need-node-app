@@ -1,18 +1,31 @@
 {
-  "name": "globixs-node-app",
+  "name": "give-the-need-node-app",
   "version": "0.0.1",
-  "description": "Application to send an e-mails",
+  "description": "Give The Need API Application",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.1244.0",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
+    "connect-mongo": "^4.6.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "http": "^0.0.1-security",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^8.4.0",
+    "mkdirp": "^1.0.4",
+    "mongoose": "^5.4.10",
+    "mongoose-sequence": "^5.3.1",
+    "mongoose-unique-validator": "^2.0.1",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.8.0",
-    "nodemon": "^2.0.20"
+    "uuid": "^9.0.0",
+    "winston": "^3.8.2"
   }
 }

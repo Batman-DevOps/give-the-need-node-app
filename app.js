@@ -1,9 +1,8 @@
 const express = require('express');
 var app = express();
-const router = require('express').Router();
-const http = require('http');
-app.use(express.json());
 
+// Config
+const config = require('./config/default.json');
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({
@@ -12,12 +11,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json({ limit: '5mb' }));
 
-var nodemailer = require('nodemailer');
+// var nodemailer = require('nodemailer');
 require('dotenv').config();
+const session = require('express-session');
 
 app.use(express.json());
 var cors = require('cors');
-let whitelist = ['http://localhost:4200', 'https://globixs.web.app'];
+let whitelist = ['http://localhost:4200', 'https://give-the-need.web.app'];
 let corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -34,6 +34,46 @@ let corsOptions = {
 };
 app.use(cors(corsOptions));
 
+const uuid = require('uuid').v4;
+const MongoStore = require('connect-mongo');
+const sess = {
+  key: config.cookie.name,
+  secret: config.app.secret,
+  // cookie: {
+  //   domain: config.cookie.domain,
+  //   path: config.cookie.path,
+  //   maxAge: config.cookie.validity * 1000,
+  //   httpOnly: false,
+  // },
+  resave: false,
+  saveUninitialized: true,
+  // store: store,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URL ? process.env.MONGO_URL : config.db.mongodb_session_store_url + config.db.session_db_name + config.db.session_db_options,
+    ttl: config.cookie.validity,
+    autoRemove: 'native', // Default
+  }),
+  name: config.cookie.name,
+  genid: function () {
+    return uuid() // use UUIDs for session IDs
+  },
+};
+app.use(session(sess));
+
+// Routes
+const allRoutes = require('./routes');
+app.use(config.app.prefix, allRoutes);
+
+const hostname = '127.0.0.1';
+const port = 3000;
+// Start the server
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+module.exports = app;
+
+/*
 const transport = {
     host: "smtp.gmail.com",
     port: 465,
@@ -54,9 +94,9 @@ const server = http.createServer(function (req, res) {
     res.end('Hello World\n');
 });
 
-app.post('/globixs/api/contact-us', sendContactUsEmail);
-app.post('/globixs/api/hire', sendHireEmail);
-app.post('/globixs/api/hiring', sendHiringEmail);
+app.post('/give-the-need/api/contact-us', sendContactUsEmail);
+app.post('/give-the-need/api/hire', sendHireEmail);
+app.post('/give-the-need/api/hiring', sendHiringEmail);
 
 async function sendContactUsEmail(req, res) {
     try {
@@ -67,7 +107,7 @@ async function sendContactUsEmail(req, res) {
             subject: req.body.subject || process.env.CONTACT_US_EMAIL_SUBJECT,
             html: `<p>Hello ${req.body.name},</p>
             <p>Thank you for contacting us. Have a nice day!</p>
-            <p>Cheers,<br>Globixs</p>`
+            <p>Cheers,<br>Give The Need</p>`
         };
 
         sendEmail(mailOptions).then((doc) => {
@@ -88,7 +128,7 @@ async function sendHireEmail(req, res) {
             subject: process.env.HIRE_EMAIL_SUBJECT,
             html: `<p>Hello</p>
             <p>Thank you for reaching out to us. Have a nice day!</p>
-            <p>Cheers,<br>Globixs</p>`
+            <p>Cheers,<br>Give The Need</p>`
         };
 
         sendEmail(mailOptions).then((doc) => {
@@ -109,9 +149,10 @@ async function sendHiringEmail(req, res) {
             subject: process.env.GET_HIRED_EMAIL_SUBJECT,
             html: `<p>Hello</p>
             <p>Thank you for reaching out to us, we will get back to you shortly. Have a nice day!</p>
-            <p>Cheers,<br>Globixs</p>`
+            <p>Cheers,<br>Give The Need</p>`
         };
-
+        console.log('mailOptions', mailOptions);
+        
         sendEmail(mailOptions).then((doc) => {
             res.json({ error: false, success: true, message: "Email sent successfully", data: {} })
         }).catch(error => {
@@ -140,7 +181,7 @@ function sendEmail(mailOptions) {
 
 app.get('/', (req, res) => {
     res.json({
-        message: 'Welcome to Globixs API'
+        message: 'Welcome to Give The Need API'
     })
 })
 
@@ -150,3 +191,4 @@ app.listen(port, hostname, function () {
 
 module.exports = router;
 module.exports = app;
+*/
