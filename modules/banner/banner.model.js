@@ -4,8 +4,9 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const BannerSchema = new mongoose.Schema({
   _id: Number,
-  description: string,
-  bannerPicDetails: {
+  title: String,
+  description: String,
+  picDetails: {
     type: mongoose.Schema.Types.Mixed
   },
   remarks: {

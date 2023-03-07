@@ -32,15 +32,16 @@ async function getById(req, res, next) {
 }
 
 async function update(req, res, next) {
-    req.body.updatedBy = await getTutorId(req);
-    TutorService.update(req.params.id, req.body)
+    let userId = await getUserId(req);
+    req.body.updatedBy = userId;
+    TutorService.update(req.body)
         .then((tutor) => res.json({ error: false, success: true, message: "Tutor updated successfully", data: tutor }))
         .catch(error => sendResponse(res, 500, null, (error.message || error || error.error), false, true));
 }
 
 async function uploadProfilePicture(req, res, next) {
-    const tutorId = await getTutorId(req)
-    req.body.updatedBy = tutorId;
+    let userId = await getUserId(req);
+    req.body.updatedBy = userId;
     TutorService.uploadProfilePicture(tutorId, req)
         .then((tutor) => res.json({ error: false, success: true, message: "Profile picture updated successfully", data: tutor }))
         .catch(error => sendResponse(res, 500, null, (error.message || error || error.error), false, true));

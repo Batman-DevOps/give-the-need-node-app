@@ -4,7 +4,6 @@ const YouthService = require('./youth.service');
 
 const { sendResponse } = require('../../utils');
 const { getUserId } = require('../../middlewares/isAuthenticated');
-
 module.exports = router;
 
 async function create(req, res, next) {
@@ -33,7 +32,7 @@ async function getById(req, res, next) {
 
 async function update(req, res, next) {
     req.body.updatedBy = await getYouthId(req);
-    YouthService.update(req.params.id, req.body)
+    YouthService.update(req.body)
         .then((youth) => res.json({ error: false, success: true, message: "Youth updated successfully", data: youth }))
         .catch(error => sendResponse(res, 500, null, (error.message || error || error.error), false, true));
 }
